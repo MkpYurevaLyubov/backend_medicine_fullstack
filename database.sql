@@ -1,0 +1,22 @@
+CREATE TABLE users
+(
+	Id SERIAL PRIMARY KEY,
+	login VARCHAR(100) NOT NULL,
+	password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE doctors
+(
+	Id SERIAL PRIMARY KEY,
+	fullName VARCHAR(150) NOT NULL
+);
+
+CREATE TABLE orders
+(
+	Id SERIAL PRIMARY KEY,
+	patientsName VARCHAR(150) NOT NULL,
+	dateOrder DATE NOT NULL,
+	complaints TEXT NOT NULL,
+	userId INTEGER REFERENCES users (Id),
+	doctorId INTEGER REFERENCES doctors (Id)
+)
