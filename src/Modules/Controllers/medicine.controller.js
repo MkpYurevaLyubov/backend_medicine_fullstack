@@ -35,3 +35,14 @@ module.exports.authUser = async (req, res) => {
     res.status(422).send({ e, message: 'Error! Params not correct!' });
   }
 };
+
+module.exports.allOrders = async (req, res) => {
+  try {
+    const { id } = req.user;
+    let orders = await db.query(`SELECT * FROM orders WHERE userid='${id}'`);
+    orders = orders.rows;
+    res.send(orders);
+  } catch (e) {
+    res.status(422).send(e);
+  }
+};
