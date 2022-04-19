@@ -15,7 +15,7 @@ module.exports.createOrder = async (req, res) => {
   try {
     const {id} = req.user;
     const {patientsname, dateorder, complaints, doctorid} = req.body;
-    if (!(patientsname && dateorder && complaints && doctorid)) return res.status(404).send("Error! Params not found!");
+    if (!(patientsname && dateorder && complaints && doctorid)) return res.status(422).send("Error! Params not found!");
 
     let orders = await db.query(`INSERT INTO orders 
       (
@@ -42,7 +42,7 @@ module.exports.createOrder = async (req, res) => {
 module.exports.updateOrder = async (req, res) => {
   try {
     const {patientsname, dateorder, complaints, doctorid, id} = req.body;
-    if (!(patientsname && dateorder && complaints && doctorid)) return res.status(404).send("Error! Params not found!");
+    if (!(patientsname && dateorder && complaints && doctorid)) return res.status(422).send("Error! Params not found!");
 
     let orders = await db.query(`UPDATE orders SET
       patientsname = '${patientsname}',
