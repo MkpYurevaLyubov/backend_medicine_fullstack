@@ -57,3 +57,16 @@ module.exports.updateOrder = async (req, res) => {
     res.status(422).send({ e, message: 'Error! Params not correct!' });
   }
 };
+
+module.exports.deleteOrder = async (req, res) => {
+  try {
+    const { id } = req.query;
+    if (!(id)) return res.status(422).send("Error! Id not found!");
+
+    let orders = await db.query(`DELETE FROM orders WHERE id = '${id}' RETURNING *`);
+    orders = orders.rows[0];
+    res.send(orders);
+  } catch (e) {
+    res.status(422).send({ e, message: 'Error! Params not correct!' });
+  }
+};
