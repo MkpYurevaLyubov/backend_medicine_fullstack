@@ -4,8 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 module.exports.authenticateToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
+  const token = req.headers.accesstoken;
 
   if (token === undefined) res.status(401).send("Error! Unauthorized!");
 

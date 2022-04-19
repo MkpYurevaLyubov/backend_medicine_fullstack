@@ -36,17 +36,6 @@ module.exports.authUser = async (req, res) => {
   }
 };
 
-module.exports.allOrders = async (req, res) => {
-  try {
-    const { id } = req.user;
-    let orders = await db.query(`SELECT * FROM orders WHERE userid='${id}'`);
-    orders = orders.rows;
-    res.send(orders);
-  } catch (e) {
-    res.status(422).send(e);
-  }
-};
-
 module.exports.allDoctors = async (req, res) => {
   try {
     let doctors = await db.query(`SELECT * FROM doctors`);
