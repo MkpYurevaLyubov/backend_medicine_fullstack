@@ -28,11 +28,8 @@ module.exports.authUser = async (req, res) => {
 
     if (!bcrypt.compareSync(password, user.password)) res.status(422).send('Error! Password not correct!');
     if (bcrypt.compareSync(password, user.password)) {
-      const token = generateAccessToken(user);
-      res.send({
-        token,
-        user
-      });
+      const token = generateAccessToken({ id: user.id });
+      res.send(token);
     }
   } catch (e) {
     res.status(422).send({ e, message: 'Error! Params not correct!' });

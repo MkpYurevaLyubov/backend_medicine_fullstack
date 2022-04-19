@@ -3,6 +3,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-module.exports.generateAccessToken = (userName) => {
-  return jwt.sign(userName, process.env.TOKEN_SECRET);
+module.exports.generateAccessToken = (id) => {
+  return jwt.sign(id, process.env.TOKEN_SECRET);
 };
