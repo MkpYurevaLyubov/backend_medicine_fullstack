@@ -46,3 +46,13 @@ module.exports.allOrders = async (req, res) => {
     res.status(422).send(e);
   }
 };
+
+module.exports.allDoctors = async (req, res) => {
+  try {
+    let doctors = await db.query(`SELECT * FROM doctors`);
+    doctors = doctors.rows;
+    res.send(doctors);
+  } catch (e) {
+    res.status(422).send(e);
+  }
+};
