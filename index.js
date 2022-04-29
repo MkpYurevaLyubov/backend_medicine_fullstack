@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require("cors");
+const cors = require('cors');
 const router = require('./src/Modules/Routers/medicine.router');
 const app = express();
 
