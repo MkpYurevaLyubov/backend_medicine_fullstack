@@ -1,6 +1,6 @@
-const db = require('../../Models/db/db');
 const bcrypt = require('bcryptjs');
 const {generateAccessToken} = require('../Middleware/generateToken.middleware');
+const { createUser, authUser, allDoctors } = require('../../Models/db/requests');
 
 module.exports.createUser = async (req, res) => {
   try {
@@ -11,7 +11,7 @@ module.exports.createUser = async (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     password = bcrypt.hashSync(password, salt);
 
-    const user = await db.query(`INSERT INTO users (login, password) values ($1, $2) RETURNING *`, [login, password]);
+    const user = await createUser(login, password);
     const token = generateAccessToken({id: user.id});
     res.send(token);
   } catch (e) {
@@ -24,8 +24,7 @@ module.exports.authUser = async (req, res) => {
     const {login, password} = req.body;
     if (!(login && password)) res.status(404).send('Error! Params not found!');
 
-    let user = await db.query(`SELECT * FROM users WHERE login='${login}'`);
-    user = user.rows[0];
+    const user = await authUser(login);
 
     if (!bcrypt.compareSync(password, user.password)) res.status(422).send('Error! Password not correct!');
     if (bcrypt.compareSync(password, user.password)) {
@@ -39,8 +38,7 @@ module.exports.authUser = async (req, res) => {
 
 module.exports.allDoctors = async (req, res) => {
   try {
-    let doctors = await db.query(`SELECT * FROM doctors ORDER BY fullname ASC`);
-    doctors = doctors.rows;
+    const doctors = await allDoctors();
     res.send(doctors);
   } catch (e) {
     res.status(422).send(e);
