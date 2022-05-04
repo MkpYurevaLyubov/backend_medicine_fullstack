@@ -15,7 +15,7 @@ CREATE TABLE orders
 (
 	Id SERIAL PRIMARY KEY,
 	patientsName VARCHAR(150) NOT NULL,
-	dateOrder DATE NOT NULL,
+	dateOrder TIMESTAMP NOT NULL,
 	complaints TEXT NOT NULL,
 	userId INTEGER REFERENCES users (Id),
 	doctorId INTEGER REFERENCES doctors (Id)
