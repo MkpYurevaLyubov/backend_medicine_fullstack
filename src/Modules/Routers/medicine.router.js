@@ -1,10 +1,11 @@
 const Router = require('express');
 const router = new Router();
-const { authenticateToken } = require('../Middleware/authenticateToken.middleware');
+const {authenticateToken} = require('../Middleware/authenticateToken.middleware');
 
 const {
   createUser,
   authUser,
+  createDoctor,
   allDoctors
 } = require('../Controllers/medicine.controller');
 
@@ -17,6 +18,7 @@ const {
 
 router.post('/createUser', createUser);
 router.post('/authUser', authUser);
+router.post('/createDoctor', createDoctor);
 router.get('/allOrders', authenticateToken, allOrders);
 router.get('/allDoctors', allDoctors);
 router.post('/createOrder', authenticateToken, createOrder);
