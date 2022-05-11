@@ -9,7 +9,7 @@ module.exports.allOrders = async (req, res) => {
     if (!to || to === 'Invalid dateT23:59:59.000Z') to = '9999-12-31T23:59:59.000Z';
 
     const orders = await allOrders(id, method, type, from, to);
-    res.send(orders);
+    res.status(200).send(orders);
   } catch (e) {
     res.status(422).send(e);
   }
@@ -21,8 +21,8 @@ module.exports.createOrder = async (req, res) => {
     const {patientsName, dateOrder, complaints, doctorId} = req.body;
     if (!(patientsName && dateOrder && complaints && doctorId)) return res.status(422).send('Error! Params not found!');
 
-    const orders = await createOrder(patientsName, dateOrder, complaints, doctorId, id);
-    res.send(orders);
+    const order = await createOrder(patientsName, dateOrder, complaints, doctorId, id);
+    res.status(200).send(order);
   } catch (e) {
     res.status(422).send({e, message: 'Error! Params not correct!'});
   }
@@ -34,7 +34,7 @@ module.exports.updateOrder = async (req, res) => {
     if (!(patientsName && dateOrder && complaints && doctorId)) return res.status(422).send("Error! Params not found!");
 
     const orders = await updateOrder(patientsName, dateOrder, complaints, doctorId, Id);
-    res.send(orders[0] ? 'Order update!' : 'Order not update!');
+    orders[0] ? res.status(200).send('Order update!') : res.status(404).send('Order not found!');
   } catch (e) {
     res.status(422).send({e, message: 'Error! Params not correct!'});
   }
@@ -46,7 +46,7 @@ module.exports.deleteOrder = async (req, res) => {
     if (!(id)) return res.status(422).send('Error! Id not found!');
 
     const orders = await deleteOrder(id);
-    res.send(orders ? 'Deleting order' : '');
+    orders ? res.status(200).send('Order delete!') : res.status(404).send('Order not found!');
   } catch (e) {
     res.status(422).send({e, message: 'Error! Params not correct!'});
   }

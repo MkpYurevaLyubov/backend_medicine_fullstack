@@ -13,7 +13,7 @@ module.exports.createUser = async (req, res) => {
 
     const user = await createUser(login, password);
     const token = generateAccessToken({id: user.Id});
-    res.send(token);
+    res.status(200).send(token);
   } catch (e) {
     res.status(422).send({e, message: 'Error! Params not correct!'});
   }
@@ -28,7 +28,7 @@ module.exports.authUser = async (req, res) => {
     if (!bcrypt.compareSync(password, user.password)) res.status(422).send('Error! Password not correct!');
     if (bcrypt.compareSync(password, user.password)) {
       const token = generateAccessToken({id: user.Id});
-      res.send(token);
+      res.status(200).send(token);
     }
   } catch (e) {
     res.status(422).send({e, message: 'Error! Params not correct!'});
@@ -39,7 +39,7 @@ module.exports.createDoctor = async (req, res) => {
   try {
     const {fullName} = req.body;
     const doctor = await createDoctor(fullName);
-    res.send(doctor);
+    res.status(200).send(doctor);
   } catch (e) {
     res.status(422).send(e);
   }
@@ -48,7 +48,7 @@ module.exports.createDoctor = async (req, res) => {
 module.exports.allDoctors = async (req, res) => {
   try {
     const doctors = await allDoctors();
-    res.send(doctors);
+    res.status(200).send(doctors);
   } catch (e) {
     res.status(422).send(e);
   }
