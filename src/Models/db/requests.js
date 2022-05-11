@@ -7,7 +7,7 @@ module.exports.createUser = async (login, password) => {
 };
 
 module.exports.authUser = async (login) => {
-  const result = User.findOne({where: {login}})
+  const result = User.findOne({where: {login}});
   return result;
 };
 
@@ -17,7 +17,11 @@ module.exports.createDoctor = async (fullName) => {
 };
 
 module.exports.allDoctors = async () => {
-  const result = Doctor.findAll();
+  const result = Doctor.findAll({
+    order: [
+      ["fullName", "ASC"]
+    ]
+  });
   return result;
 };
 
@@ -27,7 +31,7 @@ module.exports.allOrders = async (id, method, type, from, to) => {
   const result = Order.findAll({
     where: {
       userId: id,
-      dateOrder: { [Op.between]: [from, to] }
+      dateOrder: {[Op.between]: [from, to]}
     },
     include: {
       model: Doctor,
@@ -41,25 +45,21 @@ module.exports.allOrders = async (id, method, type, from, to) => {
   return result;
 };
 
-module.exports.createOrder = async (patientsName, dateOrder, complaints, doctorId, id) => {
-  const result = Order.create({patientsName, dateOrder, complaints, doctorId, "userId": id });
+module.exports.createOrder = async (patientsName, dateOrder, complaints, doctorId, userId) => {
+  const result = Order.create({patientsName, dateOrder, complaints, doctorId, userId});
   return result;
 };
 
-module.exports.updateOrder = async (patientsName, dateOrder, complaints, doctorId, id) => {
+module.exports.updateOrder = async (patientsName, dateOrder, complaints, doctorId, Id) => {
   const result = Order.update({patientsName, dateOrder, complaints, doctorId}, {
     where: {
-      Id: id
+      Id
     }
   });
   return result;
 };
 
-module.exports.deleteOrder = async (id) => {
-  const result = Order.destroy({
-    where: {
-      Id: id
-    }
-  });
+module.exports.deleteOrder = async (Id) => {
+  const result = Order.destroy({where: {Id}});
   return result;
 };

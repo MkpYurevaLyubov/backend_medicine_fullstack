@@ -37,8 +37,8 @@ module.exports.authUser = async (req, res) => {
 
 module.exports.createDoctor = async (req, res) => {
   try {
-    const {fullname} = req.body;
-    const doctor = await createDoctor(fullname);
+    const {fullName} = req.body;
+    const doctor = await createDoctor(fullName);
     res.send(doctor);
   } catch (e) {
     res.status(422).send(e);
