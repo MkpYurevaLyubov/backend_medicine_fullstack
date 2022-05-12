@@ -10,6 +10,6 @@ module.exports.generateTokens = (id) => {
     }),
     refresh_token: jwt.sign(id, process.env.TOKEN_RFR_SECRET, {
       expiresIn: '10d',
-    })
-  }
+    }),
+  };
 };
