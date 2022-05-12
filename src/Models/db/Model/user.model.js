@@ -15,6 +15,10 @@ const User = sequelize.define("users", {
   password: {
     type: DataTypes.STRING(100),
     allowNull: false
+  },
+  refreshToken: {
+    type: DataTypes.STRING,
+    unique: true
   }
 });
 

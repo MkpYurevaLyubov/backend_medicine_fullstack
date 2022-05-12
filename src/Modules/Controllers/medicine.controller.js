@@ -1,6 +1,13 @@
 const bcrypt = require('bcryptjs');
-const {generateAccessToken} = require('../Middleware/generateToken.middleware');
-const {createUser, authUser, createDoctor, allDoctors} = require('../../Models/db/requests');
+const {generateTokens} = require('../Middleware/generateToken.middleware');
+const {
+  createUser,
+  userWithToken,
+  authUser,
+  createDoctor,
+  allDoctors,
+  deleteRfrTokenInUser
+} = require('../../Models/db/requests');
 
 module.exports.createUser = async (req, res) => {
   try {
@@ -12,7 +19,8 @@ module.exports.createUser = async (req, res) => {
     password = bcrypt.hashSync(password, salt);
 
     const user = await createUser(login, password);
-    const token = generateAccessToken({id: user.Id});
+    const token = generateTokens({id: user.Id});
+    await userWithToken(user.Id, token.refresh_token);
     res.status(200).send(token);
   } catch (e) {
     res.status(422).send({e, message: 'Error! Params not correct!'});
@@ -27,7 +35,8 @@ module.exports.authUser = async (req, res) => {
     const user = await authUser(login);
     if (!bcrypt.compareSync(password, user.password)) res.status(422).send('Error! Password not correct!');
     if (bcrypt.compareSync(password, user.password)) {
-      const token = generateAccessToken({id: user.Id});
+      const token = generateTokens({id: user.Id});
+      await userWithToken(user.Id, token.refresh_token);
       res.status(200).send(token);
     }
   } catch (e) {
@@ -53,3 +62,13 @@ module.exports.allDoctors = async (req, res) => {
     res.status(422).send(e);
   }
 };
+
+module.exports.deleteRfrTokenInUser = async (req, res) => {
+  try {
+    const { id } = req.user;
+    await deleteRfrTokenInUser(id);
+    res.status(200).send("Refresh token delete");
+  } catch (e) {
+    res.status(422).send(e);
+  }
+}
