@@ -11,6 +11,18 @@ module.exports.authUser = async (login) => {
   return result;
 };
 
+module.exports.findUser = async (Id) => {
+  const result = User.findOne({where: {Id}});
+  return result;
+};
+
+module.exports.userWithToken = async (Id, refreshToken) => {
+  const result = User.update({refreshToken}, {
+    where: {Id}
+  });
+  return result;
+};
+
 module.exports.createDoctor = async (fullName) => {
   const result = Doctor.create({fullName});
   return result;
@@ -24,6 +36,13 @@ module.exports.allDoctors = async () => {
   });
   return result;
 };
+
+module.exports.deleteRfrTokenInUser = async (Id) => {
+  const result = User.update({refreshToken: null}, {
+    where: {Id}
+  });
+  return result;
+}
 
 module.exports.allOrders = async (id, method, type, from, to) => {
   let orders = [`${method || "createdAt"}`, type];
